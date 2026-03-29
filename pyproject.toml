@@ -1,0 +1,27 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "s3-quality-monitor"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+    "boto3",
+    "pandas",
+    "pyarrow",
+    "typer",
+]
+
+[project.scripts]
+monitor = "monitor.cli:app"   # enables: `monitor --bucket ...`
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "moto[s3]",
+    "pytest-cov",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["monitor"]
