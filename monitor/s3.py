@@ -1,11 +1,12 @@
 import boto3
 from typing import Generator
 
+
 def list_s3_files(
     bucket: str,
     prefix: str,
     extensions: tuple[str, ...] = (".csv", ".parquet"),
-    s3_client = None
+    s3_client=None,
 ) -> Generator[str, None, None]:
     client = s3_client or boto3.client("s3")
     kwargs = {"Bucket": bucket, "Prefix": prefix}
@@ -25,7 +26,10 @@ def list_s3_files(
 
 
 def list_s3_files_with_paginator(
-    bucket: str, prefix: str, extensions: tuple[str, ...] = (".csv", ".parquet"), s3_client = None
+    bucket: str,
+    prefix: str,
+    extensions: tuple[str, ...] = (".csv", ".parquet"),
+    s3_client=None,
 ) -> Generator[str, None, None]:
     client = s3_client or boto3.client("s3")
     paginator = client.get_paginator("list_objects_v2")
