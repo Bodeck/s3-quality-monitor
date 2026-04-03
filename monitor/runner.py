@@ -24,13 +24,14 @@ def run_checks(
         futures = [
             executor.submit(_process_file, key, bucket, validators, client) for key in s3_file_list
         ]
-        
-    reports = []
-    for f in as_completed(futures):
-        try:
-            reports.append(f.result())
-        except Exception as err:
-            reports.append(FileReport(key="uknown", results=[], err=str(err)))
+            
+        reports = []
+        for f in as_completed(futures):
+            try:
+                reports.append(f.result())
+            except Exception as err:
+                reports.append(FileReport(key="uknown", results=[], error=str(err)))
+                
     return reports
 
 
@@ -59,4 +60,4 @@ def _process_file(
         return FileReport(key=key, results=validation_results)
 
     except Exception as err:
-        return FileReport(key=key, results=[], err=str(err))
+        return FileReport(key=key, results=[], error=str(err))

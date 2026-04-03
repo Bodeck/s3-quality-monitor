@@ -1,7 +1,6 @@
 import boto3
 from typing import Generator
 
-
 def list_s3_files(
     bucket: str,
     prefix: str,
@@ -39,3 +38,19 @@ def list_s3_files_with_paginator(
             key = obj["Key"]
             if key.endswith(extensions):
                 yield key
+
+
+def upload_report(
+        bucket: str,
+        key: str,
+        content: str,
+        s3_client = None
+) -> None:
+    client = s3_client or boto3.client("s3")
+    
+    client.put_object(
+        Bucket = bucket,
+        Key = key,
+        Body = content.encode(),
+        ContentType = "application/json"
+    )
